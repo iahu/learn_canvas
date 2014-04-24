@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas dragable</title>
+</head>
+<body>
+	<canvas id="cvs" width="500" height="300" style="border: 3px solid #f60;"></canvas>
+
+	<script src="canvas_dragable.js"></script>
+	<script>
+(function () {
+	'use strict';
+	
+	var canvas = document.getElementById('cvs'),
+		ctx = canvas.getContext('2d'),
+		circle = new Circle(ctx);
+
+	circle.draw(80, 50, 30, '#f60');
+
+	circle.dragable();
+	
+	// circle.draw(80,50, 30, '#f60').move(260, 190);
+	// .move(200, 50,30);
+}());
+	</script>
+</body>
+</html>
