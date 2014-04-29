@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas context</title>
+</head>
+<body>
+	<canvas id="cvs" width="500" height="300"></canvas>
+
+	<script src="canvas_cotext.js"></script>
+	<script>
+		var ctx = getContext2D('cvs');
+
+		ctx.fillText('getContext2D', 50, 50);
+		ctx.strokeText('getContext2D', 50, 70);
+		ctx.strokeStyle = 'black';
+		ctx.stroke();
+	</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas Shape</title>
+</head>
+<body>
+	<canvas id="cvs" width="500" height="300" style="border: 2px solid #f90;"></canvas>
+
+	<script src="canvas_shape.js"></script>
+	<script>
+(function () {
+	'use strict';
+
+	var ctx = document.getElementById('cvs').getContext('2d');
+	var shape = new Shape(ctx);
+
+	shape.begainStroke('#f90').begainFill('#f90').draw('circle', 60, 60, 30).endFill();
+}());
+
+	</script>
+</body>
+</html>
