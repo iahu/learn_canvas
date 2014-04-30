@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用 requestAnimationFrame</title>
+	<style>
+body {margin: 0;}
+#cvs{position: absolute;width: 100%;height: 100%;background-color: #000;}
+	</style>
+</head>
+<body>
+	<canvas id="cvs"></canvas>
+
+	<script src="Ball.js"></script>
+	<script src="setRequestAnimateFrameFn.js"></script>
+
+	<script>
+(function () {
+	'use strict';
+
+	var canvas = document.getElementById('cvs'),
+		ctx = canvas.getContext('2d'),
+		numBall = 15,
+		balls = [];
+
+	function setCanvasSize() {
+		canvas.width = window.innerWidth || document.documentElement.innerWidth;
+		canvas.height = window.innerHeight || document.documentElement.innerHeight;
+	}
+
+	setCanvasSize();
+	window.onresize = setCanvasSize;
+
+	while (numBall--) {
+		var ball = new Ball();
+		balls.push(ball);
+		ball.r = 20;
+		ball.x = (canvas.width/2 - ball.r) + (Math.random() * 300 - 150);
+		ball.y = canvas.height/2 - ball.r + (Math.random() * 300 - 150);
+		ball.vx = (Math.random() * 50 - 20) || 30;
+		ball.vy = (Math.random() * 50 - 20) || 30;
+
+		ball.speed = Math.sqrt( ball.vx*ball.vx + ball.vy*ball.vy );
+		// ball.ax = 0.1;
+		// ball.ay = 0.1;
+		ball.draw(ctx);
+	}
+
+	setRequestAnimateFrameFn();
+	(function drawFrame() {
+		window.requestAnimationFrame(drawFrame, canvas);
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		var i = balls.length;
+		while (i--) {
+			var ball = balls[i];
+
+			if (ball.speed > ball.friction) {
+				ball.speed -= ball.friction;
+			} else {
+				ball.speed = 0;
+			}
+			ball.angle = Math.atan2(ball.vy, ball.vx);
+			ball.vx = ball.speed*Math.cos(ball.angle);
+			ball.vy = ball.speed*Math.sin(ball.angle);
+			
+			ball.x += ball.vx;
+			ball.y += ball.vy;
+
+			if ( ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) {
+				ball.vx = -ball.vx;
+				ball.vx *= ball.spring;
+				ball.x = Math.min(canvas.width, Math.max(0, ball.x));
+			}
+			if (ball.y - ball.r < 0 || ball.y + ball.r > canvas.height) {
+				ball.vy = -ball.vy;
+				ball.vy *= ball.spring;
+				ball.y = Math.min(canvas.height, Math.max(0, ball.y));
+			}
+
+			ball.draw(ctx);
+		}
+
+	}());
+}());
+	</script>
+</body>
+</html>
