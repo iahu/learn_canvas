@@ -35,24 +35,76 @@ body {margin: 0;}
 		var ball = new Ball();
 		balls.push(ball);
 		ball.r = 20;
-		ball.x = (canvas.width/2 - ball.r) + (Math.random() * 300 - 150);
-		ball.y = canvas.height/2 - ball.r + (Math.random() * 300 - 150);
-		ball.vx = (Math.random() * 50 - 20) || 30;
-		ball.vy = (Math.random() * 50 - 20) || 30;
+
+		ball.x = Math.random() * (canvas.width - ball.r) - 2*ball.r;
+		ball.y = Math.random() * (canvas.height - ball.r) - 2*ball.r;
+
+		balls.forEach(function (i, ballx) {
+			if ( isColliction( ballx, ball) ){
+				ball.x += ball.r*2;
+				ball.y += ball.r*2;
+			}
+		})
+		ball.vx = (Math.random() * 20 - 10);
+		ball.vy = (Math.random() * 20 - 10);
 
 		ball.speed = Math.sqrt( ball.vx*ball.vx + ball.vy*ball.vy );
-		// ball.ax = 0.1;
-		// ball.ay = 0.1;
-		ball.draw(ctx);
+		// ball.draw(ctx);
 	}
 
-	setRequestAnimateFrameFn();
-	(function drawFrame() {
-		window.requestAnimationFrame(drawFrame, canvas);
-		ctx.clearRect(0,0,canvas.width,canvas.height);
-		var i = balls.length;
-		while (i--) {
-			var ball = balls[i];
+	function isColliction(a, b) {
+		var dx = a.x - b.x,
+			dy = a.y - b.y,
+			min_dist = a.r + b.r;
+
+		return dx * dx + dy * dy < min_dist * min_dist;
+	}
+
+	function checkColliction(a,i) {
+		numBall = balls.length;
+		for (var b, dx, dy, dist, min_dist, j = i+1;j < numBall; j++) {
+			b = balls[j],
+			dx = a.x - b.x,
+			dy = a.y - b.y,
+			dist = Math.sqrt(dx*dx + dy*dy),
+			min_dist = a.r+b.r;
+
+			if (dist < min_dist) {
+				var angle = Math.atan2(dx, dy),
+					tx = a.x + Math.cos(angle) * min_dist,
+					ty = a.y + Math.sin(angle) * min_dist,
+					ax = (tx - b.x) * b.spring * 0.5,
+					ay = (ty - b.y) * b.spring * 0.5;
+
+				a.vx -= ax;
+				a.vy -= ay;
+				b.vx += ax;
+				b.vy += ay;
+			}
+		}
+	}
+
+	function move(ball) {
+		// ball.vy += ball.ay;
+		// ball.x += ball.vx;
+		// ball.y += ball.vy;
+
+		// var bounce = ball.spring;
+
+		// if (ball.x + ball.r > canvas.width) {
+		// 	ball.x = canvas.width - ball.r;
+		// 	ball.vx *= bounce;
+		// } else if (ball.x - ball.r < 0) {
+		// 	ball.x = ball.r;
+		// 	ball.vx *= bounce;
+		// }
+		// if (ball.y + ball.r > canvas.height) {
+		// 	ball.y = canvas.height - ball.r;
+		// 	ball.vy *= bounce;
+		// } else if (ball.y - ball.r < 0) {
+		// 	ball.y = ball.r;
+		// 	ball.vy *= bounce;
+		// }
 
 			if (ball.speed > ball.friction) {
 				ball.speed -= ball.friction;
@@ -76,8 +128,20 @@ body {margin: 0;}
 				ball.vy *= ball.spring;
 				ball.y = Math.min(canvas.height, Math.max(0, ball.y));
 			}
+	}
 
+	setRequestAnimateFrameFn();
+	(function drawFrame() {
+		window.requestAnimationFrame(drawFrame, canvas);
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+
+		for (var i = 0, numBall = balls.length; i < numBall; i++) {
+			var ball = balls[i];
+			
+			move(ball);
 			ball.draw(ctx);
+
+			checkColliction(ball, i);
 		}
 
 	}());
