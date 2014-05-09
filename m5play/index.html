@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>M5Play</title>
+	<style>
+body {background-color: #000;}
+#m5play {display: block;width: 1000px;height: 500px;margin: 0 auto;}
+#ctrl{text-align: center;display: none;}
+#typein {background-color: #333;border: 1px solid #555;color:#fff;font-size: 16px;}
+	</style>
+</head>
+<body>
+	<canvas id="m5play"></canvas>
+	<div id="ctrl">
+		<input type="text" name="typein" id="typein">
+	</div>
+
+	<script src="daojishi.js"></script>
+	<script src="m5play.js"></script>
+    <script>
+    // var $typein = document.getElementById('typein');
+    var m5play = new M5Play(canvas, 'IBM');
+    var t ,text;
+    var lastTime = +new Date('2014/05/08 21:00');
+    function pad2(n) {
+    	return n <10? '0'+n: n;
+    }
+
+  //   (function update() {
+		// t = daojishi(lastTime);
+		// text = [pad2(t.hour), pad2(t.minute), pad2(t.second)].join(':');
+		// m5play.setText(text);
+
+  //   	setTimeout(update, 1000);
+  //   }());
+    </script>
+</body>
+</html>

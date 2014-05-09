@@ -71,15 +71,46 @@ body {margin: 0;}
 
 			if (dist < min_dist) {
 				var angle = Math.atan2(dy, dx),
-					tx = a.x + Math.cos(angle) * min_dist,
-					ty = a.y + Math.sin(angle) * min_dist,
-					ax = (tx - b.x) * b.spring * 0.5,
-					ay = (ty - b.y) * b.spring * 0.5;
+					sin = Math.sin(angle),
+					cos = Math.cos(angle);
 
-				a.vx -= ax;
-				a.vy -= ay;
-				b.vx += ax;
-				b.vy += ay;
+				// 将两圆旋转到水平方向
+				var xA = 0;
+				var yA = 0;
+				var xB = dx*cos+dy*sin;
+				var yB = dy*cos-dx*sin;
+
+				// 旋转速度方向
+				var vxA = a.vx*cos+a.vy*sin;
+				var vyA = a.vy*cos-a.vx*sin;
+				var vxB = b.vx*cos+b.vy*sin;
+				var vyB = b.vy*cos-b.vx*sin;
+
+				// 处理重合问题
+				var overlap = min_dist - dist;
+				xA -= overlap/2;
+				xB += overlap/2;
+
+				xA += vxB;
+				xB += vxA;
+
+
+				// 旋转回去坐标
+				var xAFinal = xA*cos - yA*sin;
+				var yAFinal = yA*cos + xA*sin;
+				var xBFinal = xB*cos - yB*sin;
+				var yBFinal = yB*cos + xB*sin;
+
+				b.x = a.x+xBFinal;
+				b.y = a.y+yBFinal;
+				a.x += xAFinal;
+				a.y += yAFinal;
+
+				// 速度方向
+				a.vx = vxB*cos - vyA*sin;
+				a.vy = vxB*cos + vxA*sin;
+				b.vx = vxA*cos - vyB*sin;
+				b.vy = vyA*cos + vxB*sin;
 			}
 		}
 	}

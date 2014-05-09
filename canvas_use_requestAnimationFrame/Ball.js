@@ -7,10 +7,10 @@ var Ball = function () {
 	this.ax = 0;
 	this.ay = 0;
 	this.friction = 0.02;
-	this.spring = 0.03;
+	this.bounce = -0.03;
 	this.lineWidth = 0;
-	this.fillStyle = '#f30';
-	this.strokeStyle = '#f30';
+	this.fillStyle = '#'+ (parseInt(Math.random() * 0xffffff)).toString(16);
+	this.strokeStyle = '#000';
 };
 
 Ball.prototype.draw = function(ctx) {
