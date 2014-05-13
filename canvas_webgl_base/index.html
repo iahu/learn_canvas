@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WebGL base</title>
+</head>
+<body>
+	<canvas id="cvs"></canvas>
+	
+<script>
+function initWebGL(canvas) {
+	gl = null;
+	try {
+		gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+	} catch(e) {}
+
+	if (!gl) {
+		alert('Unable to initialize WebGL. Your browser may not support it.');
+	}
+}
+
+function start() {
+	var canvas = document.getElementById('cvs');
+
+	initWebGL(canvas);
+
+	if (gl) {
+		gl.clearColor(0.0,0.0,0.0,1.0);
+		gl.enable(gl.DEPTH_TEST);
+	}
+}
+window.onload = start;
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>字符</title>
+	<style>
+body{padding: 0;}
+	</style>
+</head>
+<body>
+	<canvas id="cvs" width="400" height="400"></canvas>
+
+	<script src="character.js"></script>
+	<script>
+(function () {
+	'use strict';
+
+	var c = document.getElementById('cvs');
+	var character = new Character(c);
+
+	var data = character.drawText('节操');
+	character.build(data);
+	character.animate();
+}());
+	</script>
+</body>
+</html>
