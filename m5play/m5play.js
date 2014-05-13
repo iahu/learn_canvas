@@ -73,21 +73,23 @@ M5Play.prototype.getPathData = function() {
 	var y = (canvas.height-textHeight)/2;
 	var pixelData = ctx.getImageData(x,y, textWidth, textHeight).data;
 	var pathObj = [];
-	var h;
+	var _x,_y, h = 0;
 	var c = this._ctx;
 	c.fillStyle = '#0ff';
 
-	for (var i = 0, plen=pixelData.length; i < plen; i+=4) {
-		h = Math.ceil((i+1)/(textWidth*4));
-		if ( h%cell === 2 ) {
-			i = i + textWidth*4*(cell-1);
-			// h += cell-1; //目标行
-			// i = (h-1)*textWidth*4;
-		}
-		// console.log(i);
+	for (var i = 0, plen=pixelData.length; i < plen; i+=cell*4) {
+		_w = textWidth*4+1;
+		
 		if ( pixelData[i] === d ) {
-			var _x = ( i%(textWidth*4) )/4;
-			pathObj.push( [_x+x, y+h] );
+			_x = ((i)%_w)/4;
+			_y = Math.floor( i/_w );
+
+			pathObj.push( [_x, _y] );
+			// console.log(_x, _y, i);
+		}
+
+		if ( (i+1)%_w === 0 ) {
+			i = i + _w*(cell-1) - (cell*4-1);
 		}
 	}
 	pixelData = null;
