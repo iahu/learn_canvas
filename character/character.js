@@ -55,7 +55,7 @@ Character.prototype.shape = (function() {
 		this.bounce = -0.6;
 		this.lineWidth = 0;
 		// this.fillStyle = '#'+ (parseInt(Math.random() * 0xffffff)).toString(16);
-		this.fillStyle = '#000';
+		this.fillStyle = '#F00';
 		this.strokeStyle = '#000';
 	};
 
