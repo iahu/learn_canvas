@@ -7,9 +7,9 @@ var cgl = new Cgl('cvs'),
 	squareVerticesBuffer,
 	vertexPositionAttribute;
 
-if (!gl) {
+if (typeof gl === 'undefined') {
 	alert('浏览器不支持webgl');
-	return;
+	throw Error('浏览器不支持webgl');
 }
 
 initShaders();
